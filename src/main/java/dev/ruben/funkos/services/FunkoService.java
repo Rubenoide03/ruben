@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface FunkoService {
-    Page<FunkoDTOResponse> findAll(Optional<String> nombre, Optional<String> model, Optional<String> descripcion,  Optional<Double> precio, Optional<Integer> cantidad, Pageable pageable);
+    Page<FunkoDTOResponse> findAll(Optional<String> name, Optional<String> model, Optional<String> description, Optional<Double> price, Optional<Integer> stock, Pageable pageable);
 
     FunkoDTOResponse findById(UUID id);
     FunkoDTOResponse save(FunkoCreateDTO pieza);

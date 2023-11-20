@@ -34,11 +34,13 @@ public class FunkoServiceImpl implements FunkoService {
         this.funkoMapper = funkoMapper;
     }
 
-
     @Override
     public Page<FunkoDTOResponse> findAll(Optional<String> name, Optional<String> model, Optional<String> description, Optional<Double> price, Optional<Integer> stock, Pageable pageable) {
         Specification<Funko> specNombrePieza = (root, query, criteriaBuilder) ->
                 name.map(m -> criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), "%" + m.toLowerCase() + "%"))
+                        .orElseGet(() -> criteriaBuilder.isTrue(criteriaBuilder.literal(true)));
+        Specification<Funko> specModelPieza = (root, query, criteriaBuilder) ->
+                model.map(m -> criteriaBuilder.like(criteriaBuilder.lower(root.get("model")), "%" + m.toLowerCase() + "%"))
                         .orElseGet(() -> criteriaBuilder.isTrue(criteriaBuilder.literal(true)));
 
         Specification<Funko> specDescripcionPieza = (root, query, criteriaBuilder) ->
@@ -50,16 +52,27 @@ public class FunkoServiceImpl implements FunkoService {
                         .orElseGet(() -> criteriaBuilder.isTrue(criteriaBuilder.literal(true)));
 
         Specification<Funko> specStockPieza = (root, query, criteriaBuilder) ->
-                price.map(m -> criteriaBuilder.greaterThanOrEqualTo(root.get("stock"), m))
+                stock.map(m -> criteriaBuilder.greaterThanOrEqualTo(root.get("stock"), m))
                         .orElseGet(() -> criteriaBuilder.isTrue(criteriaBuilder.literal(true)));
+
 
         Specification<Funko> criterio = Specification.where(specStockPieza)
                 .and(specNombrePieza)
                 .and(specMaxPrecioPieza)
+                .and(specModelPieza)
+                .and(specStockPieza)
                 .and(specDescripcionPieza);
 
 
-        return funkoRepository.findAll(criterio, pageable).map(funkoMapper::toFunkoResponse);
+
+        return funkoRepository.findAllByNombreContainingAndModelContainingAndDescripcionContainingAndPrecioLessThanEqualAndCantidadGreaterThanEqual(
+                name.orElse(""),
+                model.orElse(""),
+                description.orElse(""),
+                price.orElse(0.0),
+                stock.orElse(0),
+                pageable
+        ).map(funkoMapper::toFunkoResponse);
 
 
 
