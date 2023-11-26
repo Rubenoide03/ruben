@@ -35,6 +35,9 @@ dependencies {
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
+    	implementation ("org.springframework.boot:spring-boot-starter-security"
+)
+
 }
 
 tasks.withType<Test> {

@@ -21,6 +21,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.UUID;
+
+import static org.hibernate.Hibernate.map;
+
 @Service
 @CacheConfig(cacheNames = "piezas")
 @Slf4j
@@ -65,15 +68,8 @@ public class FunkoServiceImpl implements FunkoService {
 
 
 
-        return funkoRepository.findAllByNombreContainingAndModelContainingAndDescripcionContainingAndPrecioLessThanEqualAndCantidadGreaterThanEqual(
-                name.orElse(""),
-                model.orElse(""),
-                description.orElse(""),
-                price.orElse(0.0),
-                stock.orElse(0),
-                pageable
-        ).map(funkoMapper::toFunkoResponse);
 
+        return funkoRepository.findAll(criterio, pageable).map(funkoMapper::toFunkoResponse);
 
 
 
