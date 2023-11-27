@@ -19,6 +19,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +36,7 @@ import java.util.UUID;
 @Slf4j
 @RequestMapping("/v1/funkos")
 @CacheConfig(cacheNames = "funkos")
+@PreAuthorize("hasAnyRole('ADMIN','USER')")
 public class FunkoController {
     private final FunkoService funkoService;
 
@@ -43,7 +47,9 @@ public class FunkoController {
 
     }
     @GetMapping()
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public ResponseEntity<PageResponse<FunkoDTOResponse>> getAllPiezas(
+
             @RequestParam(required = false) Optional<String> name,
             @RequestParam (required = false) Optional<String> model,
             @RequestParam (required = false) Optional<String> description,
@@ -63,31 +69,40 @@ public class FunkoController {
     }
     @Cacheable(key = "#id")
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public ResponseEntity<FunkoDTOResponse> getPiezaById(@PathVariable @Valid UUID id) {
         log.info("Buscando pieza por id: " + id);
         return ResponseEntity.ok(funkoService.findById(id));
     }
     @CachePut(key = "#result.id")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping()
 
     public ResponseEntity<FunkoDTOResponse> createPieza(@Valid @RequestBody FunkoCreateDTO funkoCreateDTO) {
+
+
         log.info("Creando pieza: " + funkoCreateDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(funkoService.save(funkoCreateDTO));
     }
     @CachePut(key = "#result.id")
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+
     public ResponseEntity<FunkoDTOResponse> updatePieza(@PathVariable UUID id, @Valid @RequestBody FunkoUpdateDTO funkoUpdateDTO) {
         log.info("Actualizando pieza por id: " + id + " con pieza: " + funkoUpdateDTO);
         return ResponseEntity.ok(funkoService.update(id, funkoUpdateDTO));
     }
 
     @PatchMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+
     public ResponseEntity<FunkoDTOResponse> updatePartialPieza(@PathVariable UUID id, @Valid @RequestBody FunkoUpdateDTO funkoUpdateDTO) {
         log.info("Actualizando parcialmente pieza por id: " + id + " con pieza: " +funkoUpdateDTO );
         return ResponseEntity.ok(funkoService.update(id, funkoUpdateDTO));
     }
     @CacheEvict(key = "#id")
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Void> deletePieza(@PathVariable @Valid UUID id) {
         log.info("Borrando pieza por id: " + id);
         funkoService.deleteById(id);

@@ -8,14 +8,13 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+/*
 @Controller
 @RequestMapping("/v1/funkos")
 @Slf4j
 public class WebFunkoController {
     private final FunkoService funkoService;
     private final MessageSource messageSource;
-    private final UserStore userSession;
     @Autowired
     public WebFunkoController(FunkoService funkoService, MessageSource messageSource) {
         this.funkoService = funkoService;
@@ -33,3 +32,5 @@ public class WebFunkoController {
 
 
 }
+
+ */
