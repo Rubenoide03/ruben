@@ -7,7 +7,6 @@ import dev.ruben.funkos.dto.FunkoUpdateDTO;
 import dev.ruben.funkos.exceptions.FunkoNotFound;
 import dev.ruben.funkos.mappers.FunkoMapper;
 import dev.ruben.funkos.models.Funko;
-import dev.ruben.funkos.models.Model;
 import dev.ruben.funkos.repositories.FunkoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +20,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.UUID;
-
-import static org.hibernate.Hibernate.map;
 
 @Service
 @CacheConfig(cacheNames = "piezas")

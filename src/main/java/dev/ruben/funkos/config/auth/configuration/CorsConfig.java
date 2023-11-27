@@ -1,4 +1,4 @@
-package dev.ruben.funkos.config.auth;
+package dev.ruben.funkos.config.auth.configuration;
 
 
 import org.springframework.context.annotation.Bean;

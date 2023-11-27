@@ -1,4 +1,4 @@
-package dev.ruben.funkos.config.auth;
+package dev.ruben.funkos.config.auth.configuration;
 
 import com.auth0.jwt.algorithms.Algorithm;
 import org.springframework.beans.factory.annotation.Value;

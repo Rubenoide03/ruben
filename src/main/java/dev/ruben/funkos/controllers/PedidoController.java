@@ -6,6 +6,8 @@ import dev.ruben.funkos.models.Pedido;
 import dev.ruben.funkos.services.PedidosService;
 import dev.ruben.utils.PageResponse;
 import dev.ruben.utils.PaginationLinksUtils;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameters;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +37,13 @@ public class PedidoController {
 
 
     @GetMapping()
+    @Operation(summary = "Obtener todos los pedidos con filtros opcionales")
+    @Parameters({
+            @io.swagger.v3.oas.annotations.Parameter(name = "page", description = "Número de página", example = "0"),
+            @io.swagger.v3.oas.annotations.Parameter(name = "size", description = "Tamaño de la página", example = "10"),
+            @io.swagger.v3.oas.annotations.Parameter(name = "sortBy", description = "Campo por el que ordenar", example = "id"),
+            @io.swagger.v3.oas.annotations.Parameter(name = "direction", description = "Dirección de la ordenación", example = "asc"),
+    })
     public ResponseEntity<PageResponse<Pedido>> getAllPedidos(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -53,6 +62,10 @@ public class PedidoController {
 
 
     @GetMapping("/{id}")
+    @Operation(summary = "Obtener un pedido por su id")
+    @Parameters({
+            @io.swagger.v3.oas.annotations.Parameter(name = "id", description = "Identificador único del pedido", example = "60a5f9b9e0b9a72f7c9f0b1a", required = true)
+    })
     public ResponseEntity<Pedido> getPedido(@PathVariable("id") ObjectId idPedido) {
         log.info("Obteniendo pedido con id: " + idPedido);
         return ResponseEntity.ok(pedidosService.findById(idPedido));
@@ -60,6 +73,14 @@ public class PedidoController {
 
 
     @GetMapping("/usuario/{id}")
+    @Operation(summary = "Obtener todos los pedidos de un usuario")
+    @Parameters({
+            @io.swagger.v3.oas.annotations.Parameter(name = "id", description = "Identificador único del usuario", example = "1", required = true),
+            @io.swagger.v3.oas.annotations.Parameter(name = "page", description = "Número de página", example = "0"),
+            @io.swagger.v3.oas.annotations.Parameter(name = "size", description = "Tamaño de la página", example = "10"),
+            @io.swagger.v3.oas.annotations.Parameter(name = "sortBy", description = "Campo por el que ordenar", example = "id"),
+            @io.swagger.v3.oas.annotations.Parameter(name = "direction", description = "Dirección de la ordenación", example = "asc"),
+    })
     public ResponseEntity<PageResponse<Pedido>> getPedidosByUsuario(
             @PathVariable("id") Long idUsuario,
             @RequestParam(defaultValue = "0") int page,
@@ -75,6 +96,10 @@ public class PedidoController {
 
 
     @PostMapping()
+    @Operation(summary = "Crear un pedido")
+    @Parameters({
+            @io.swagger.v3.oas.annotations.Parameter(name = "pedido", description = "Objeto de tipo Pedido", required = true)
+    })
     public ResponseEntity<Pedido> createPedido(@Valid @RequestBody Pedido pedido) {
         log.info("Creando pedido: " + pedido);
         return ResponseEntity.status(HttpStatus.CREATED).body(pedidosService.save(pedido));
@@ -82,6 +107,11 @@ public class PedidoController {
 
 
     @PutMapping("/{id}")
+    @Operation(summary = "Actualizar un pedido por su id")
+    @Parameters({
+            @io.swagger.v3.oas.annotations.Parameter(name = "id", description = "Identificador único del pedido", example = "60a5f9b9e0b9a72f7c9f0b1a", required = true),
+            @io.swagger.v3.oas.annotations.Parameter(name = "pedido", description = "Objeto de tipo Pedido", required = true)
+    })
     public ResponseEntity<Pedido> updatePedido(@PathVariable("id") ObjectId idPedido, @Valid @RequestBody Pedido pedido) {
         log.info("Actualizando pedido con id: " + idPedido);
         return ResponseEntity.ok(pedidosService.update(idPedido, pedido));
@@ -89,6 +119,10 @@ public class PedidoController {
 
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Borrar un pedido por su id")
+    @Parameters({
+            @io.swagger.v3.oas.annotations.Parameter(name = "id", description = "Identificador único del pedido", example = "60a5f9b9e0b9a72f7c9f0b1a", required = true)
+    })
     public ResponseEntity<Pedido> deletePedido(@PathVariable("id") ObjectId idPedido) {
         log.info("Borrando pedido con id: " + idPedido);
         pedidosService.delete(idPedido);

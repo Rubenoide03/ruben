@@ -3,6 +3,9 @@ import dev.ruben.funkos.config.auth.dto.JwtAuthResponse;
 import dev.ruben.funkos.config.auth.dto.UserSignInRequest;
 import dev.ruben.funkos.config.auth.dto.UserSignUpRequest;
 import dev.ruben.funkos.config.auth.services.autentication.AuthenticationService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +38,7 @@ public class AuthenticationRestController {
      * @return Token de autenticación
      */
     @PostMapping("/signup")
+    @Operation(summary = "Registrar un usuario")
     public ResponseEntity<JwtAuthResponse> signUp(@Valid @RequestBody UserSignUpRequest request) {
         log.info("Registrando usuario: {}", request);
         log.info("Usuario: " + request.getUsername());
@@ -49,6 +53,8 @@ public class AuthenticationRestController {
      * @return Token de autenticación
      */
     @PostMapping("/signin")
+    @Operation (summary = "Iniciar sesión de un usuario")
+    @Parameters
     public ResponseEntity<JwtAuthResponse> signIn(@Valid @RequestBody UserSignInRequest request) {
         log.info("Iniciando sesión de usuario: {}", request);
         return ResponseEntity.ok(authenticationService.signIn(request));

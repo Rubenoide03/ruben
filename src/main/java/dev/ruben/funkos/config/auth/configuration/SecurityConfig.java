@@ -1,4 +1,4 @@
-package dev.ruben.funkos.config.auth;
+package dev.ruben.funkos.config.auth.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
