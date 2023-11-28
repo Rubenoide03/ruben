@@ -48,19 +48,7 @@ public class UsersRestController {
         this.paginationLinksUtils = paginationLinksUtils;
     }
 
-    /**
-     * Obtiene todos los usuarios
-     *
-     * @param username  username del usuario
-     * @param email     email del usuario
-     * @param isDeleted si está borrado o no
-     * @param page      página
-     * @param size      tamaño
-     * @param sortBy    campo de ordenación
-     * @param direction dirección de ordenación
-     * @param request   petición
-     * @return Respuesta con la página de usuarios
-     */
+
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')") // Solo los admin pueden acceder
     public ResponseEntity<PageResponse<UserResponse>> findAll(
@@ -75,9 +63,7 @@ public class UsersRestController {
     ) {
         log.info("findAll: username: {}, email: {}, isDeleted: {}, page: {}, size: {}, sortBy: {}, direction: {}",
                 username, email, isDeleted, page, size, sortBy, direction);
-        // Creamos el objeto de ordenación
         Sort sort = direction.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
-        // Creamos cómo va a ser la paginación
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(request.getRequestURL().toString());
         Page<UserResponse> pageResult = usersService.findAll(username, email, isDeleted, PageRequest.of(page, size, sort));
         return ResponseEntity.ok()
@@ -85,12 +71,7 @@ public class UsersRestController {
                 .body(PageResponse.of(pageResult, sortBy, direction));
     }
 
-    /**
-     * Obtiene un usuario por su id
-     *
-     * @param id del usuario, se pasa como parámetro de la URL /{id}
-     * @return Usuario si existe
-     */
+
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')") // Solo los admin pueden acceder
     public ResponseEntity<UserInfoResponse> findById(@PathVariable Long id) {
@@ -113,14 +94,6 @@ public class UsersRestController {
         return ResponseEntity.status(HttpStatus.CREATED).body(usersService.save(userRequest));
     }
 
-    /**
-     * Actualiza un usuario
-     *
-     * @param id          id del usuario
-     * @param userRequest usuario a actualizar
-     * @return Usuario actualizado
-     * @throws HttpClientErrorException.BadRequest si hay algún error de validación (400)
-     */
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')") // Solo los admin pueden acceder
     public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @Valid @RequestBody UserRequest userRequest) {
@@ -128,12 +101,7 @@ public class UsersRestController {
         return ResponseEntity.ok(usersService.update(id, userRequest));
     }
 
-    /**
-     * Borra un usuario
-     *
-     * @param id id del usuario
-     * @return Respuesta vacía
-     */
+
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')") // Solo los admin pueden acceder
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {

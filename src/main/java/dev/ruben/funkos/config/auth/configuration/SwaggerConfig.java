@@ -1,6 +1,7 @@
 package dev.ruben.funkos.config.auth.configuration;
 
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -19,7 +20,7 @@ class SwaggerConfig {
 
     @Value("${api.version}")
     private String apiVersion;
-
+    @Operation(summary = "Configuración de Swagger")
     private SecurityScheme createAPIKeyScheme() {
         return new SecurityScheme().type(SecurityScheme.Type.HTTP)
                 .bearerFormat("JWT")
@@ -27,6 +28,7 @@ class SwaggerConfig {
     }
 
     @Bean
+    @Operation(summary = "Configuración de Swagger para pagina web")
     OpenAPI apiInfo() {
         return new OpenAPI()
                 .info(
@@ -69,7 +71,7 @@ class SwaggerConfig {
     GroupedOpenApi httpApi() {
         return GroupedOpenApi.builder()
                 .group("https")
-                .pathsToMatch("/" + apiVersion + "/funkos/**") //Solo productos
+                .pathsToMatch("/" + apiVersion + "/funkos/**","/"+apiVersion+ "/auth/**","/"+apiVersion+ "/users/**")
                 .displayName("Funko Store API")
                 .build();
     }

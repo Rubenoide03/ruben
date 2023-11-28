@@ -11,5 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class JwtAuthResponse {
+    @Schema(description = "Token de autenticación")
     private String token;
 }

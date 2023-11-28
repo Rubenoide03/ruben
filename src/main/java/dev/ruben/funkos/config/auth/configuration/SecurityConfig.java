@@ -1,5 +1,6 @@
 package dev.ruben.funkos.config.auth.configuration;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -39,6 +40,7 @@ public class SecurityConfig {
     }
 
     @Bean
+    @Operation(summary = "Configuración de seguridad")
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .requiresChannel(channel -> channel.anyRequest().requiresSecure())
@@ -66,11 +68,13 @@ public class SecurityConfig {
     }
 
     @Bean
+    @Operation(summary = "Codificador de contraseñas")
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
+    @Operation(summary = "Proveedor de autenticación")
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userService);

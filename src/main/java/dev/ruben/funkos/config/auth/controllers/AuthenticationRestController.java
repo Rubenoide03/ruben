@@ -31,12 +31,7 @@ public class AuthenticationRestController {
         this.authenticationService = authenticationService;
     }
 
-    /**
-     * Registra un usuario
-     *
-     * @param request datos del usuario
-     * @return Token de autenticación
-     */
+
     @PostMapping("/signup")
     @Operation(summary = "Registrar un usuario")
     public ResponseEntity<JwtAuthResponse> signUp(@Valid @RequestBody UserSignUpRequest request) {
@@ -46,12 +41,7 @@ public class AuthenticationRestController {
         return ResponseEntity.ok(authenticationService.signUp(request));
     }
 
-    /**
-     * Inicia sesión de un usuario
-     *
-     * @param request datos del usuario
-     * @return Token de autenticación
-     */
+
     @PostMapping("/signin")
     @Operation (summary = "Iniciar sesión de un usuario")
     @Parameters
@@ -59,13 +49,6 @@ public class AuthenticationRestController {
         log.info("Iniciando sesión de usuario: {}", request);
         return ResponseEntity.ok(authenticationService.signIn(request));
     }
-
-    /**
-     * Manejador de excepciones de Validación: 400 Bad Request
-     *
-     * @param ex excepción
-     * @return Mapa de errores de validación con el campo y el mensaje
-     */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, String> handleValidationExceptions(

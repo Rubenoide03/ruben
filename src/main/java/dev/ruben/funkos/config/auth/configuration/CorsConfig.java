@@ -8,9 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class CorsConfig {
-    /**
-     * CORS: Configuración más ajustada.
-     */
+
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
@@ -24,11 +22,12 @@ public class CorsConfig {
             // Debes probar con uncliente desde ese puerto
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/funkos/**")
-                        //.allowedOrigins("http://localhost:3000")
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
                         .maxAge(3600);
                 registry.addMapping("/api/users/**")
-                        //.allowedOrigins("http://localhost:3000")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE")
+                        .maxAge(3600);
+                registry.addMapping("/api/auth/**")
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
                         .maxAge(3600);
             }

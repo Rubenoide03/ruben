@@ -1,6 +1,7 @@
 package dev.ruben.funkos.config.auth.configuration;
 
 import com.auth0.jwt.algorithms.Algorithm;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +29,7 @@ public class JwtConfig {
     private String keyPassword;
 
     @Bean
+    @Operation(summary = "Obtener el algoritmo de firma")
     public Algorithm getAlgorithm() {
         try {
             KeyStore keyStore = KeyStore.getInstance("JKS");
