@@ -1,3 +1,19 @@
+
+db.createUser({
+    user: 'admin',
+    pwd: 'adminPassword123',
+    roles: [
+        {
+            role: 'readWrite',
+            db: 'funkos',
+        },
+    ],
+});
+
+db = db.getSiblingDB('funkos');
+
+db.createCollection('pedidos');
+
 db.pedidos.insertMany([
     {
         _id: ObjectId('6536518de9b0d305f193b5ef'),

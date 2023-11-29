@@ -59,6 +59,7 @@ public class SecurityConfig {
                         .requestMatchers("/ws/**").permitAll()
                         .requestMatchers("/storage/**").permitAll()
                         .requestMatchers("/" + apiVersion + "/**").permitAll()
+                        .requestMatchers("/" + apiVersion + "/pedidos/**").permitAll()
                         .anyRequest().authenticated())
 
                 .authenticationProvider(authenticationProvider()).addFilterBefore(
