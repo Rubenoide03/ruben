@@ -17,12 +17,20 @@ services:
       - ./database/funkos.js:/docker-entrypoint-initdb.d/funkos.js:ro
 
 
-  mongo-express:
-    container_name: pedidos-db_mongo-express
-    image: mongo-express
+
+  # PostgresSQL
+  postgres-db:
+    container_name: funkos-db_postgres
+    image: postgres:12-alpine
     restart: always
     env_file: .env
-    ports:
-      - 8081:8081
     environment:
-      ME_CONFIG_MONGODB_SERVER: mongo
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DATABASE}
+    ports:
+      - ${POSTGRES_PORT}:5432
+    volumes:
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - funkos-network

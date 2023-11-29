@@ -50,6 +50,7 @@ public class Funko {
     private Integer stock;
     @Column(name = "imagen", nullable = true)
     @Schema(description = "Imagen del Funko" , example = "https://via.placeholder.com/150" ,required = true)
+    @Builder.Default
     private String image = IMAGE_DEFAULT;
     @Column(name = "createdAt")
     @Schema(description = "Fecha de creación del Funko" , example = "2021-05-12T12:00:00" ,required = true)
